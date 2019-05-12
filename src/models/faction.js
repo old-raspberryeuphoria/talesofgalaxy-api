@@ -30,7 +30,7 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Faction.associate = function(models) {
+  Faction.associate = models => {
     Faction.hasMany(models.Character, {
       foreignKey: 'factionId',
     });

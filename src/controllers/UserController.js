@@ -20,6 +20,10 @@ export const show = async ctx => {
     params: { safeName },
   } = ctx;
 
+  /*
+    We use the safeName in the request because
+    we don't want to communicate the userId to the world
+  */
   const user = await User.findOne({
     where: {
       safeName,
