@@ -52,7 +52,7 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Character.associate = function(models) {
+  Character.associate = models => {
     Character.belongsTo(models.User, {
       as: 'user',
       foreignKey: 'userId',
@@ -61,6 +61,18 @@ export default (sequelize, DataTypes) => {
     Character.belongsTo(models.Faction, {
       as: 'faction',
       foreignKey: 'factionId',
+    });
+
+    Character.belongsToMany(models.Attribute, {
+      as: 'characters',
+      through: 'CharacterAttribute',
+      foreignKey: 'characterId',
+      otherKey: 'attributeId',
+    });
+
+    Character.hasMany(models.CharacterAttribute, {
+      as: 'attributes',
+      foreignKey: 'characterId',
     });
   };
 

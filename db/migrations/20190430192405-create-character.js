@@ -10,6 +10,10 @@ module.exports = {
       userId: {
         allowNull: false,
         type: Sequelize.UUID,
+        references: {
+          model: 'User',
+          key: 'id',
+        },
       },
       lastName: {
         allowNull: false,
@@ -31,6 +35,10 @@ module.exports = {
       },
       factionId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Faction',
+          key: 'id',
+        },
       },
       isArchived: {
         type: Sequelize.BOOLEAN,

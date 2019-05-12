@@ -1,14 +1,23 @@
-import { Character, Faction, User } from '../models';
+import { Character, CharacterAttribute, Attribute, Faction, User } from '../models';
+
+const userInclude = {
+  model: User,
+  as: 'user',
+  attributes: { exclude: ['id', 'email', 'password'] },
+};
 
 const factionInclude = {
   model: Faction,
   as: 'faction',
 };
 
-const userInclude = {
-  model: User,
-  as: 'user',
-  attributes: { exclude: ['password'] },
+const characterAttributesInclude = {
+  model: CharacterAttribute,
+  as: 'attributes',
+  include: {
+    model: Attribute,
+    as: 'attribute',
+  },
 };
 
 export const index = async ctx => {
@@ -29,14 +38,24 @@ export const show = async ctx => {
   } = ctx;
 
   const character = await Character.findByPk(id, {
-    include: [factionInclude, userInclude],
+    include: [factionInclude, userInclude, characterAttributesInclude],
   });
 
   if (!character) {
     ctx.throw(404, 'Unable to find character');
   }
 
-  ctx.body = { character };
+  const output = {
+    ...character.toJSON(),
+    attributes: character.attributes.map(characterAttribute => {
+      return {
+        value: characterAttribute.value,
+        name: characterAttribute.attribute.name,
+      };
+    }),
+  };
+
+  ctx.body = { character: output };
   ctx.status = 200;
 };
 

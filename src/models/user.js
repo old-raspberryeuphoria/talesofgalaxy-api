@@ -91,7 +91,7 @@ export default (sequelize, DataTypes) => {
     },
   );
 
-  User.associate = function(models) {
+  User.associate = models => {
     User.hasOne(models.Character, {
       foreignKey: 'userId',
       onUpdate: 'cascade',

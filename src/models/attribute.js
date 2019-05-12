@@ -26,10 +26,22 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Attribute.associate = function(models) {
+  Attribute.associate = models => {
     // Attribute.hasMany(models.Skill, {
-    //   foreignKey: 'AttributeId',
+    //   foreignKey: 'attributeId',
     // });
+
+    Attribute.belongsToMany(models.Character, {
+      as: 'characters',
+      through: 'CharacterAttribute',
+      foreignKey: 'attributeId',
+      otherKey: 'characterId',
+    });
+
+    Attribute.hasMany(models.CharacterAttribute, {
+      as: 'attributes',
+      foreignKey: 'attributeId',
+    });
   };
 
   return Attribute;
