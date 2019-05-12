@@ -1,7 +1,5 @@
-import safeString from '../helpers/strings/safeString';
-
 export default (sequelize, DataTypes) => {
-  const Faction = sequelize.define('Faction', {
+  const Attribute = sequelize.define('Attribute', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -13,11 +11,9 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: { args: true, msg: { message: 'Name unique violation' } },
     },
-    safeName: {
-      type: DataTypes.VIRTUAL,
-      get() {
-        return safeString(this.name);
-      },
+    description: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     color: {
       allowNull: false,
@@ -30,11 +26,11 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Faction.associate = function(models) {
-    Faction.hasMany(models.Character, {
-      foreignKey: 'factionId',
-    });
+  Attribute.associate = function(models) {
+    // Attribute.hasMany(models.Skill, {
+    //   foreignKey: 'AttributeId',
+    // });
   };
 
-  return Faction;
+  return Attribute;
 };

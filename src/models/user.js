@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import config from 'config';
 import diacritics from 'diacritics';
 
+import safeString from '../helpers/strings/safeString';
 import { ROLE_ADMIN } from '../helpers/constants/roles';
 
 const hiddenProperties = ['password'];
@@ -11,6 +12,12 @@ function normalizeEmail(value, key) {
     this.setDataValue(key, diacritics.remove(value.toLowerCase()));
   } else {
     this.setDataValue(key, null);
+  }
+}
+
+function setSafeName(user) {
+  if (user.changed('name')) {
+    user.safeName = safeString(user.name);
   }
 }
 
@@ -30,10 +37,13 @@ export default (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.UUIDV4,
       },
-      username: {
+      name: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: { args: true, msg: { message: 'Username unique violation' } },
+        unique: { args: true, msg: { message: 'Name unique violation' } },
+      },
+      safeName: {
+        type: DataTypes.STRING,
       },
       email: {
         allowNull: false,
@@ -63,8 +73,14 @@ export default (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: hashPassword,
-        beforeUpdate: hashPassword,
+        beforeCreate: user => {
+          hashPassword(user);
+          setSafeName(user);
+        },
+        beforeUpdate: user => {
+          hashPassword(user);
+          setSafeName(user);
+        },
       },
     },
   );

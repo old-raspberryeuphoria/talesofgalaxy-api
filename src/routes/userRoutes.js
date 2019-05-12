@@ -9,7 +9,7 @@ const userRoutes = new KoaRouter({
 userRoutes.get('/', index);
 userRoutes.post('/', create);
 userRoutes.put('/:id', update);
-userRoutes.get('/:id', show);
+userRoutes.get('/:safeName', show);
 userRoutes.delete('/:id', del);
 
 export default userRoutes;

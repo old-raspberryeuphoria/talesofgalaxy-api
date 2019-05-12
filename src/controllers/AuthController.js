@@ -40,10 +40,10 @@ export const signIn = async ctx => {
       });
     }
   } else {
-    const { password, username } = ctx.request.body;
+    const { password, name } = ctx.request.body;
     const userInstance = await User.findOne({
       where: {
-        username,
+        name,
         isArchived: false,
       },
     });

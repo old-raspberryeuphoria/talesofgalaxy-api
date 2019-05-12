@@ -17,10 +17,14 @@ export const index = async ctx => {
 
 export const show = async ctx => {
   const {
-    params: { id },
+    params: { safeName },
   } = ctx;
 
-  const user = await User.findByPk(id);
+  const user = await User.findOne({
+    where: {
+      safeName,
+    },
+  });
 
   if (!user) {
     ctx.throw(404, 'Unable to find user');

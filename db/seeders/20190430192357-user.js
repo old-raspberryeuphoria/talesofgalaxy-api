@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const config = require('config');
+const safeString = require('../../src/helpers/strings/safeString').default;
 
 module.exports = {
   up: async queryInterface => {
@@ -10,7 +11,10 @@ module.exports = {
       [
         {
           id: 'd99dead3-923c-583e-96fe-4e18e8299a54',
-          username: "L'Observateur",
+          name: "L'Observateur",
+          get safeName() {
+            return safeString(this.name);
+          },
           email: 'theobs@talesofgalaxy.fr',
           password,
           createdAt: '2018-05-14T09:54:16.723Z',
@@ -19,7 +23,10 @@ module.exports = {
         },
         {
           id: '09b3153d-0925-5632-928f-71e06af292f9',
-          username: 'Tyrannie',
+          name: 'Tyrannie',
+          get safeName() {
+            return safeString(this.name);
+          },
           email: 'tyrannie@talesofgalaxy.fr',
           password,
           createdAt: '2018-05-14T09:54:16.723Z',
@@ -28,7 +35,10 @@ module.exports = {
         },
         {
           id: '07f94576-41d7-51f2-88ff-b8b60d9648b8',
-          username: 'Gendja the Hutt',
+          name: 'Gendja the Hutt',
+          get safeName() {
+            return safeString(this.name);
+          },
           email: 'gendja@talesofgalaxy.fr',
           password,
           createdAt: '2018-05-14T09:54:16.723Z',

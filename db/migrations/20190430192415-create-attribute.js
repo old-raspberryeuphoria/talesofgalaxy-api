@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Faction', {
+    return queryInterface.createTable('Attribute', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,7 +10,10 @@ module.exports = {
       name: {
         allowNull: false,
         type: Sequelize.STRING,
-        unique: true,
+      },
+      description: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       color: {
         allowNull: false,
@@ -31,6 +34,6 @@ module.exports = {
     });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('Faction');
+    return queryInterface.dropTable('Attribute');
   },
 };
