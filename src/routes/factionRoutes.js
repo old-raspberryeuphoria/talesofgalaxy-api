@@ -8,8 +8,8 @@ const factionRoutes = new KoaRouter({
 
 factionRoutes.get('/', index);
 factionRoutes.post('/', create);
-factionRoutes.put('/:id/:safeName', update);
-factionRoutes.get('/:id/:safeName', show);
-factionRoutes.delete('/:id/:safeName', del);
+factionRoutes.put('/:id', update);
+factionRoutes.get('/:id', show);
+factionRoutes.delete('/:id', del);
 
 export default factionRoutes;

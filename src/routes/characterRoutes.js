@@ -8,8 +8,8 @@ const characterRoutes = new KoaRouter({
 
 characterRoutes.get('/', index);
 characterRoutes.post('/', create);
-characterRoutes.put('/:id/:safeName', update);
-characterRoutes.get('/:id/:safeName', show);
-characterRoutes.delete('/:id/:safeName', del);
+characterRoutes.put('/:id', update);
+characterRoutes.get('/:id', show);
+characterRoutes.delete('/:id', del);
 
 export default characterRoutes;

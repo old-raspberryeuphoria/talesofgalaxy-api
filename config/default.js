@@ -12,9 +12,9 @@ const guestAllowedRoutes = [
   ['/users', ['GET', 'POST'], '*'],
   ['/users/:safeName', ['GET'], '*'],
   ['/factions', ['GET'], '*'],
-  ['/factions/:id/:safeName', ['GET'], '*'],
+  ['/factions/:id', ['GET'], '*'],
   ['/characters', ['GET'], '*'],
-  ['/characters/:id/:safeName', ['GET'], '*'],
+  ['/characters/:id', ['GET'], '*'],
   ['/attributes', ['GET'], '*'],
   ['/attributes/:id', ['GET'], '*'],
 ];
@@ -23,21 +23,21 @@ const userAllowedRoutes = [
   ...guestAllowedRoutes,
   ['/users/:id', ['PUT'], ['self', ROLE_ADMIN]],
   ['/characters', ['POST'], '*'],
-  ['/characters/:id/:safeName', ['PUT'], ['self', ROLE_ADMIN, ROLE_GAME_MASTER]],
+  ['/characters/:id', ['PUT'], ['self', ROLE_ADMIN, ROLE_GAME_MASTER]],
 ];
 
 const gameMasterAllowedRoutes = [
   ...userAllowedRoutes,
-  ['/factions/:id/:safeName', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
+  ['/factions/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
   ['/attributes/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
 ];
 
 const adminAllowedRoutes = [
   ...gameMasterAllowedRoutes,
-  ['/characters/:id/:safeName', ['DELETE'], '*'],
+  ['/characters/:id', ['DELETE'], '*'],
   ['/users/:id', ['DELETE'], '*'],
   ['/factions', ['POST'], '*'],
-  ['/factions/:id/:safeName', ['DELETE'], '*'],
+  ['/factions/:id', ['DELETE'], '*'],
   ['/attributes', ['POST'], '*'],
   ['/attributes/:id', ['DELETE'], '*'],
 ];

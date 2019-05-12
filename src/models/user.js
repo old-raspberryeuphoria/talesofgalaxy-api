@@ -42,7 +42,13 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: { args: true, msg: { message: 'Name unique violation' } },
       },
+      /*
+        The User model is the only model where the safeName is a real property
+        instead of a virtual. This is because we don't want to expose the id
+        in our public requests: instead, we'll use the safeName.
+      */
       safeName: {
+        allowNull: false,
         type: DataTypes.STRING,
       },
       email: {
