@@ -1,7 +1,8 @@
 
 ### Tales of Galaxy API
 
-This is the API repository for Tales of Galaxy, a role-playing forum board using NodeJS with Koa.
+This is the API repository for Tales of Galaxy, a role-playing forum board using NodeJS with Koa.  
+The previous version was started with Symfony (see https://github.com/saberCoffee/talesofgalaxy). In the near future, the front-end of the current version will be set in another repository.
 
 ## Requirements
 
