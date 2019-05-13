@@ -25,7 +25,7 @@ export const index = async ctx => {
     where: {
       isArchived: false,
     },
-    include: [factionInclude],
+    include: factionInclude,
   });
 
   ctx.body = { characters };
