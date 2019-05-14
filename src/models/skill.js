@@ -1,10 +1,14 @@
 export default (sequelize, DataTypes) => {
-  const Attribute = sequelize.define('Attribute', {
+  const Skill = sequelize.define('Skill', {
     id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.INTEGER,
       autoIncrement: true,
+    },
+    attributeId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
     },
     name: {
       allowNull: false,
@@ -15,10 +19,6 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
     },
-    color: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
     isArchived: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -26,23 +26,12 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Attribute.associate = models => {
-    Attribute.hasMany(models.Skill, {
-      foreignKey: 'attributeId',
-    });
-
-    Attribute.belongsToMany(models.Character, {
-      as: 'characters',
-      through: 'CharacterAttribute',
-      foreignKey: 'attributeId',
-      otherKey: 'characterId',
-    });
-
-    Attribute.hasMany(models.CharacterAttribute, {
-      as: 'attributes',
+  Skill.associate = models => {
+    Skill.belongsTo(models.Attribute, {
+      as: 'attribute',
       foreignKey: 'attributeId',
     });
   };
 
-  return Attribute;
+  return Skill;
 };
