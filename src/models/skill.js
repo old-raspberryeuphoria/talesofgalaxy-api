@@ -31,6 +31,13 @@ export default (sequelize, DataTypes) => {
       as: 'attribute',
       foreignKey: 'attributeId',
     });
+
+    Skill.belongsToMany(models.Character, {
+      as: 'skills',
+      through: 'CharacterSkill',
+      foreignKey: 'skillId',
+      otherKey: 'characterId',
+    });
   };
 
   return Skill;

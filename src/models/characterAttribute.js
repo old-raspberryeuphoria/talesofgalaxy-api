@@ -24,10 +24,6 @@ export default (sequelize, DataTypes) => {
       as: 'attributes',
       foreignKey: 'characterId',
     });
-
-    // CharacterAttribute.hasMany(models.Skill, {
-    //   foreignKey: 'CharacterAttributeId',
-    // });
   };
 
   return CharacterAttribute;

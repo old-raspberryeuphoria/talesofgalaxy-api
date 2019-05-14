@@ -32,6 +32,13 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
+          name: 'Intelligence',
+          description: 'Lorem Ipsum',
+          color: '#176b75',
+          createdAt: '2018-05-14T09:54:16.723Z',
+          updatedAt: '2018-05-15T12:12:53.504Z',
+        },
+        {
           name: 'Instincts',
           description: 'Lorem Ipsum',
           color: '#5242d1',

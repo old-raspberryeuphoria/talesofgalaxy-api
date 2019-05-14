@@ -1,4 +1,12 @@
-import { Character, CharacterAttribute, Attribute, Faction, User } from '../models';
+import {
+  Attribute,
+  Character,
+  CharacterAttribute,
+  CharacterSkill,
+  Faction,
+  User,
+  Skill,
+} from '../models';
 
 const userInclude = {
   model: User,
@@ -20,6 +28,15 @@ const characterAttributesInclude = {
   },
 };
 
+const characterSkillInclude = {
+  model: CharacterSkill,
+  as: 'skills',
+  include: {
+    model: Skill,
+    as: 'skill',
+  },
+};
+
 export const index = async ctx => {
   const characters = await Character.findAll({
     where: {
@@ -38,7 +55,7 @@ export const show = async ctx => {
   } = ctx;
 
   const character = await Character.findByPk(id, {
-    include: [factionInclude, userInclude, characterAttributesInclude],
+    include: [factionInclude, userInclude, characterAttributesInclude, characterSkillInclude],
   });
 
   if (!character) {
@@ -47,12 +64,14 @@ export const show = async ctx => {
 
   const output = {
     ...character.toJSON(),
-    attributes: character.attributes.map(characterAttribute => {
-      return {
-        value: characterAttribute.value,
-        name: characterAttribute.attribute.name,
-      };
-    }),
+    attributes: character.attributes.map(({ value, attribute: { name } }) => ({
+      value,
+      name,
+    })),
+    skills: character.skills.map(({ isSpecialised, skill: { name } }) => ({
+      isSpecialised,
+      name,
+    })),
   };
 
   ctx.body = { character: output };

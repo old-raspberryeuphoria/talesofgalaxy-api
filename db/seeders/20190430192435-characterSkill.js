@@ -1,38 +1,38 @@
 module.exports = {
   up: queryInterface =>
     queryInterface.bulkInsert(
-      'Skill',
+      'CharacterSkill',
       [
         {
-          name: 'Pilotage',
-          description: 'Lorem Ipsum',
-          attributeId: 2,
+          characterId: 1,
+          skillId: 1,
+          isSpecialised: false,
           createdAt: '2018-05-14T09:54:16.723Z',
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          name: 'Maniement des armes : pistolet blaster',
-          description: 'Lorem Ipsum',
-          attributeId: 2,
+          characterId: 1,
+          skillId: 2,
+          isSpecialised: true,
           createdAt: '2018-05-14T09:54:16.723Z',
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          name: 'Maniement des armes : sabre laser',
-          description: 'Lorem Ipsum',
-          attributeId: 1,
+          characterId: 1,
+          skillId: 3,
+          isSpecialised: false,
           createdAt: '2018-05-14T09:54:16.723Z',
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          name: 'Informatique',
-          description: 'Lorem Ipsum',
-          attributeId: 5,
+          characterId: 2,
+          skillId: 2,
+          isSpecialised: true,
           createdAt: '2018-05-14T09:54:16.723Z',
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
       ],
       {},
     ),
-  down: queryInterface => queryInterface.bulkDelete('Skill', null, {}),
+  down: queryInterface => queryInterface.bulkDelete('CharacterSkill', null, {}),
 };

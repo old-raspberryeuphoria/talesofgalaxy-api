@@ -32,15 +32,10 @@ export default (sequelize, DataTypes) => {
     });
 
     Attribute.belongsToMany(models.Character, {
-      as: 'characters',
+      as: 'attributes',
       through: 'CharacterAttribute',
       foreignKey: 'attributeId',
       otherKey: 'characterId',
-    });
-
-    Attribute.hasMany(models.CharacterAttribute, {
-      as: 'attributes',
-      foreignKey: 'attributeId',
     });
   };
 
