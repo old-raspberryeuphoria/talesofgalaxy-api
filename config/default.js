@@ -19,6 +19,8 @@ const guestAllowedRoutes = [
   ['/attributes/:id', ['GET'], '*'],
   ['/skills', ['GET'], '*'],
   ['/skills/:id', ['GET'], '*'],
+  ['/forums', ['GET'], '*'],
+  ['/forums/:id', ['GET'], '*'],
 ];
 
 const userAllowedRoutes = [
@@ -33,6 +35,7 @@ const gameMasterAllowedRoutes = [
   ['/factions/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
   ['/attributes/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
   ['/skills/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
+  ['/forums/:id', ['PUT'], '*'],
 ];
 
 const adminAllowedRoutes = [
@@ -45,6 +48,8 @@ const adminAllowedRoutes = [
   ['/attributes/:id', ['DELETE'], '*'],
   ['/skills', ['POST'], '*'],
   ['/skills/:id', ['DELETE'], '*'],
+  ['/forums', ['POST'], '*'],
+  ['/forums/:id', ['DELETE'], '*'],
 ];
 
 module.exports = {
