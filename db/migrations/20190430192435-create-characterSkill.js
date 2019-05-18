@@ -1,32 +1,26 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Skill', {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-      },
-      attributeId: {
+    return queryInterface.createTable('CharacterSkill', {
+      skillId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Attribute',
+          model: 'Skill',
           key: 'id',
         },
       },
-      name: {
+      characterId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Character',
+          key: 'id',
+        },
       },
-      description: {
+      isSpecialised: {
         allowNull: false,
-        type: Sequelize.STRING,
-      },
-      isArchived: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
         defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +33,6 @@ module.exports = {
     });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('Skill');
+    return queryInterface.dropTable('CharacterSkill');
   },
 };

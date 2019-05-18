@@ -41,6 +41,7 @@ module.exports = {
         },
       },
       isArchived: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
