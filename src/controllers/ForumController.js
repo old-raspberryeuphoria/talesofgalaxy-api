@@ -1,5 +1,6 @@
 import hierarchizeForums from '../helpers/forums/hierarchizeForums';
 import { Forum } from '../models';
+import { ROLE_ADMIN, ROLE_GAME_MASTER } from '../helpers/constants/roles';
 
 const parentForumInclude = {
   model: Forum,
