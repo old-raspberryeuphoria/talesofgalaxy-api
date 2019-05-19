@@ -27,14 +27,14 @@ export default (sequelize, DataTypes) => {
   });
 
   Forum.associate = models => {
-    Forum.belongsTo(models.Forum, {
-      as: 'parentForum',
-      foreignKey: 'id',
+    Forum.hasMany(models.Forum, {
+      as: 'subForums',
+      foreignKey: 'parentId',
     });
 
-    Forum.hasMany(models.Forum, {
-      as: 'subforums',
-      foreignKey: 'id',
+    Forum.belongsTo(models.Forum, {
+      as: 'parentForum',
+      foreignKey: 'parentId',
     });
   };
 

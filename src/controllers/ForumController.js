@@ -1,4 +1,15 @@
+import hierarchizeForums from '../helpers/forums/hierarchizeForums';
 import { Forum } from '../models';
+
+const parentForumInclude = {
+  model: Forum,
+  as: 'parentForum',
+};
+
+const subForumsInclude = {
+  model: Forum,
+  as: 'subForums',
+};
 
 export const index = async ctx => {
   const forums = await Forum.findAll({
@@ -8,25 +19,7 @@ export const index = async ctx => {
     raw: true,
   });
 
-  const map = {};
-  forums.forEach(forum => (map[forum.id] = forum));
-
-  for (let i = forums.length - 1; i >= 0; i--) {
-    const forum = forums[i];
-    const parentForum = forum.parentId && map[forum.parentId];
-
-    if (parentForum) {
-      if (parentForum.hasOwnProperty('subForums')) {
-        parentForum.subForums.push(forum);
-      } else {
-        parentForum.subForums = [forum];
-      }
-
-      forums.splice(i, 1);
-    }
-  }
-
-  ctx.body = { forums };
+  ctx.body = { forums: hierarchizeForums(forums) };
   ctx.status = 200;
 };
 
@@ -35,7 +28,9 @@ export const show = async ctx => {
     params: { id },
   } = ctx;
 
-  const forum = await Forum.findByPk(id);
+  const forum = await Forum.findByPk(id, {
+    include: [parentForumInclude, subForumsInclude],
+  });
 
   if (!forum) {
     ctx.throw(404, 'Unable to find forum');
@@ -65,6 +60,15 @@ export const update = async ctx => {
   } = ctx;
 
   const forum = await Forum.findByPk(id);
+
+  if (!forum) {
+    ctx.throw(404, 'Unable to find forum');
+  }
+
+  if (body.parentId === forum.id) {
+    ctx.throw(401, "You can't set the parentId of a forum to its own id.");
+  }
+
   const updatedForum = await forum.update(body);
 
   if (updatedForum) {
@@ -78,8 +82,20 @@ export const del = async ctx => {
     params: { id },
   } = ctx;
 
-  const forum = await Forum.findByPk(id);
+  const forum = await Forum.findByPk(id, {
+    include: subForumsInclude,
+  });
+
+  if (!forum) {
+    ctx.throw(404, 'Unable to find forum');
+  }
+
   const archivedForum = await forum.update({ isArchived: true });
+
+  forum.subForums.forEach(async subForum => {
+    const forum = await Forum.findByPk(subForum.id);
+    await forum.update({ parentId: null });
+  });
 
   if (archivedForum) {
     ctx.body = { archivedForum };

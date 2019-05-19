@@ -4,7 +4,6 @@ module.exports = {
       'Forum',
       [
         {
-          id: 1,
           name: 'Accueil & Règles du jeu',
           description: 'Lorem Ipsum',
           parentId: null,
@@ -12,7 +11,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 2,
           name: 'Règles du jeu',
           description: 'Lorem Ipsum',
           parentId: 1,
@@ -20,7 +18,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 3,
           name: 'Vos suggestions',
           description: 'Lorem Ipsum',
           parentId: 1,
@@ -28,7 +25,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 4,
           name: 'Vos absences',
           description: 'Lorem Ipsum',
           parentId: 1,
@@ -36,7 +32,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 5,
           name: 'Encyclopédie galactique',
           description: 'Lorem Ipsum',
           parentId: null,
@@ -44,7 +39,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 6,
           name: 'Créer votre personnage',
           description: 'Lorem Ipsum',
           parentId: 5,
@@ -52,7 +46,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 7,
           name: 'Personnage joueurs',
           description: 'Lorem Ipsum',
           parentId: 5,
@@ -60,7 +53,6 @@ module.exports = {
           updatedAt: '2018-05-15T12:12:53.504Z',
         },
         {
-          id: 8,
           name: 'Personnage non joueurs',
           description: 'Lorem Ipsum',
           parentId: 5,

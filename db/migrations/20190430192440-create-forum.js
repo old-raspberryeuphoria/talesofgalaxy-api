@@ -3,12 +3,13 @@ module.exports = {
     return queryInterface.createTable('Forum', {
       id: {
         allowNull: false,
+        primaryKey: true,
         type: Sequelize.INTEGER,
-        unique: true,
+        autoIncrement: true,
       },
       parentId: {
-        type: Sequelize.INTEGER,
         allowNull: true,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Forum',
           key: 'id',
