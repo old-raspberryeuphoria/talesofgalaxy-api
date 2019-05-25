@@ -7,6 +7,8 @@ import {
   User,
   Skill,
 } from '../models';
+import isRoleAuthorized from '../helpers/permissions/isRoleAuthorized';
+import { ROLE_GAME_MASTER } from '../helpers/constants/roles';
 
 const userInclude = {
   model: User,
@@ -100,9 +102,18 @@ export const update = async ctx => {
   const {
     params: { id },
     request: { body },
+    currentUser: { id: userId, role },
   } = ctx;
 
   const character = await Character.findByPk(id);
+
+  if (
+    userId !== character.userId &&
+    !isRoleAuthorized({ targetRole: ROLE_GAME_MASTER, currentRole: role })
+  ) {
+    ctx.throw(403, 'You do not have permission to modify this resource');
+  }
+
   const updatedCharacter = await character.update(body);
 
   if (updatedCharacter) {

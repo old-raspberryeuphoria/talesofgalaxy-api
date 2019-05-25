@@ -1,56 +1,8 @@
 require('@babel/register');
 require('dotenv').config();
 
+import routes from './routes';
 const { version } = require('../package.json');
-const { ROLE_ADMIN, ROLE_GAME_MASTER } = require('../src/helpers/constants/roles');
-
-const guestAllowedRoutes = [
-  ['', ['GET'], '*'],
-  ['/auth/sign-in', ['POST'], '*'],
-  ['/auth/reset-password', ['POST'], '*'],
-  ['/auth/check-token', ['POST'], '*'],
-  ['/users', ['GET', 'POST'], '*'],
-  ['/users/:safeName', ['GET'], '*'],
-  ['/factions', ['GET'], '*'],
-  ['/factions/:id', ['GET'], '*'],
-  ['/characters', ['GET'], '*'],
-  ['/characters/:id', ['GET'], '*'],
-  ['/attributes', ['GET'], '*'],
-  ['/attributes/:id', ['GET'], '*'],
-  ['/skills', ['GET'], '*'],
-  ['/skills/:id', ['GET'], '*'],
-  ['/forums', ['GET'], '*'],
-  ['/forums/:id', ['GET'], '*'],
-];
-
-const userAllowedRoutes = [
-  ...guestAllowedRoutes,
-  ['/users/:id', ['PUT'], ['self', ROLE_ADMIN]],
-  ['/characters', ['POST'], '*'],
-  ['/characters/:id', ['PUT'], ['self', ROLE_ADMIN, ROLE_GAME_MASTER]],
-];
-
-const gameMasterAllowedRoutes = [
-  ...userAllowedRoutes,
-  ['/factions/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
-  ['/attributes/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
-  ['/skills/:id', ['PUT'], [ROLE_ADMIN, ROLE_GAME_MASTER]],
-  ['/forums/:id', ['PUT'], '*'],
-];
-
-const adminAllowedRoutes = [
-  ...gameMasterAllowedRoutes,
-  ['/characters/:id', ['DELETE'], '*'],
-  ['/users/:id', ['DELETE'], '*'],
-  ['/factions', ['POST'], '*'],
-  ['/factions/:id', ['DELETE'], '*'],
-  ['/attributes', ['POST'], '*'],
-  ['/attributes/:id', ['DELETE'], '*'],
-  ['/skills', ['POST'], '*'],
-  ['/skills/:id', ['DELETE'], '*'],
-  ['/forums', ['POST'], '*'],
-  ['/forums/:id', ['DELETE'], '*'],
-];
 
 module.exports = {
   port: 3000,
@@ -74,24 +26,7 @@ module.exports = {
     expiresIn: '730h',
     mailExpiresIn: '730h',
   },
-  acl: [
-    {
-      role: 'guest',
-      allows: guestAllowedRoutes,
-    },
-    {
-      role: 'user',
-      allows: userAllowedRoutes,
-    },
-    {
-      role: 'gameMaster',
-      allows: gameMasterAllowedRoutes,
-    },
-    {
-      role: 'admin',
-      allows: adminAllowedRoutes,
-    },
-  ],
+  acl: routes,
   request: {
     sizeLimit: '15mb',
     ratelimit: {
