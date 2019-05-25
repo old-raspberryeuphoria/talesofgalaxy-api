@@ -92,7 +92,7 @@ export default (sequelize, DataTypes) => {
   );
 
   User.associate = models => {
-    User.hasOne(models.Character, {
+    User.hasMany(models.Character, {
       foreignKey: 'userId',
       onUpdate: 'cascade',
     });

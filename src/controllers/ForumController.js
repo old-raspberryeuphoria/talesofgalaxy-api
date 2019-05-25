@@ -1,6 +1,10 @@
 import hierarchizeForums from '../helpers/forums/hierarchizeForums';
-import { Forum } from '../models';
-import { ROLE_ADMIN, ROLE_GAME_MASTER } from '../helpers/constants/roles';
+import { Forum, ForumPermission } from '../models';
+
+const permissionsInclude = {
+  model: ForumPermission,
+  as: 'permissions',
+};
 
 const parentForumInclude = {
   model: Forum,
@@ -13,14 +17,18 @@ const subForumsInclude = {
 };
 
 export const index = async ctx => {
+  const {
+    currentUser: { role },
+  } = ctx;
+
   const forums = await Forum.findAll({
     where: {
       isArchived: false,
     },
-    raw: true,
+    include: permissionsInclude,
   });
 
-  ctx.body = { forums: hierarchizeForums(forums) };
+  ctx.body = { forums: hierarchizeForums(forums, role) };
   ctx.status = 200;
 };
 

@@ -1,6 +1,14 @@
-export default forums => {
-  const hierarchizedForums = [...forums];
+import isRoleAuthorized from '../permissions/isRoleAuthorized';
+
+const filterUnauthorizedForums = (forum, userRole) =>
+  isRoleAuthorized({ targetRole: forum.permissions.read, currentRole: userRole });
+
+export default (forums, userRole) => {
   const map = {};
+
+  const hierarchizedForums = [...forums]
+    .filter(forum => filterUnauthorizedForums(forum, userRole))
+    .map(forum => ({ ...forum.toJSON(), subForums: [] }));
 
   hierarchizedForums.forEach(forum => (map[forum.id] = forum));
 
@@ -9,12 +17,7 @@ export default forums => {
     const parentForum = forum.parentId && map[forum.parentId];
 
     if (parentForum) {
-      if (parentForum.hasOwnProperty('subForums')) {
-        parentForum.subForums.push(forum);
-      } else {
-        parentForum.subForums = [forum];
-      }
-
+      parentForum.subForums.push(forum);
       hierarchizedForums.splice(i, 1);
     }
   }

@@ -27,6 +27,11 @@ export default (sequelize, DataTypes) => {
   });
 
   Forum.associate = models => {
+    Forum.hasOne(models.ForumPermission, {
+      as: 'permissions',
+      foreignKey: 'id',
+    });
+
     Forum.hasMany(models.Forum, {
       as: 'subForums',
       foreignKey: 'parentId',
