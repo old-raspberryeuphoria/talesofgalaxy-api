@@ -1,32 +1,46 @@
 export default (sequelize, DataTypes) => {
-  const Forum = sequelize.define('Forum', {
-    id: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+  const Forum = sequelize.define(
+    'Forum',
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+      },
+      parentId: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: { args: true, msg: { message: 'Name unique violation' } },
+      },
+      description: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      isArchived: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
     },
-    parentId: {
-      allowNull: true,
-      type: DataTypes.INTEGER,
+    {
+      hooks: {
+        afterCreate: async forum =>
+          await sequelize.models.ForumPermission.create({ forumId: forum.id }),
+      },
     },
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      unique: { args: true, msg: { message: 'Name unique violation' } },
-    },
-    description: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    isArchived: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false,
-    },
-  });
+  );
 
   Forum.associate = models => {
+    Forum.hasOne(models.ForumPermission, {
+      as: 'permissions',
+      foreignKey: 'id',
+    });
+
     Forum.hasMany(models.Forum, {
       as: 'subForums',
       foreignKey: 'parentId',
