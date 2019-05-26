@@ -32,8 +32,8 @@ export default class AccessControlList {
         } else if (allowedRoles.includes('self') && this.request.id === this.user.id) {
           return true;
         } else {
-          for (const role of allowedRoles) {
-            if (isRoleAuthorized({ targetRole: role, currentRole: user.role })) {
+          for (const roleRequired of allowedRoles) {
+            if (isRoleAuthorized({ roleRequired, role: user.role })) {
               return true;
             }
           }

@@ -3,6 +3,7 @@ import passport from 'koa-passport';
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 
 import accessControlList from './AccessControlList';
+import isRoleAuthorized from '../../helpers/permissions/isRoleAuthorized';
 
 const options = {
   jwtFromRequest: ExtractJwt.versionOneCompatibility({
@@ -22,12 +23,17 @@ passport.use(
   }),
 );
 
+const hasPermission = function(roleRequired) {
+  return isRoleAuthorized({ roleRequired, role: this.role });
+};
+
 export const AuthHandler = (ctx, next) => {
   const acl = new accessControlList(config.acl, ctx.request);
   const { authorization } = ctx.request.header;
 
   ctx.currentUser = {
     role: 'guest',
+    hasPermission,
   };
 
   if (!authorization) {
@@ -40,19 +46,23 @@ export const AuthHandler = (ctx, next) => {
         });
       }
     })(ctx, next);
-  } else {
-    return passport.authenticate('jwt', { session: false }, async (err, jwtPayload, info) => {
-      if (jwtPayload === false) {
-        ctx.throw(401, 'Invalid token', { code: 'USR_AUT_04_00' });
-      } else if (acl.allowAccess(jwtPayload)) {
-        ctx.currentUser = jwtPayload;
-        await next();
-      } else {
-        const message = info || 'You do not have permission to access this resource';
-        ctx.throw(401, message, { code: 'USR_AUT_03_00' });
-      }
-    })(ctx, next);
   }
+
+  return passport.authenticate('jwt', { session: false }, async (err, jwtPayload, info) => {
+    if (jwtPayload === false) {
+      ctx.throw(401, 'Invalid token', { code: 'USR_AUT_04_00' });
+    } else if (acl.allowAccess(jwtPayload)) {
+      ctx.currentUser = {
+        ...jwtPayload,
+        hasPermission,
+      };
+
+      await next();
+    } else {
+      const message = info || 'You do not have permission to access this resource';
+      ctx.throw(401, message, { code: 'USR_AUT_03_00' });
+    }
+  })(ctx, next);
 };
 
 export default passport;
