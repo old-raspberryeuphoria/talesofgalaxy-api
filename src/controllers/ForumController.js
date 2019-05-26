@@ -1,5 +1,4 @@
 import hierarchizeForums from '../helpers/forums/hierarchizeForums';
-import isRoleAuthorized from '../helpers/permissions/isRoleAuthorized';
 import { Forum, ForumPermission } from '../models';
 
 const permissionsInclude = {
@@ -36,7 +35,7 @@ export const index = async ctx => {
 export const show = async ctx => {
   const {
     params: { id },
-    currentUser: { role },
+    currentUser,
   } = ctx;
 
   const forum = await Forum.findByPk(id, {
@@ -47,7 +46,7 @@ export const show = async ctx => {
     ctx.throw(404, 'Unable to find forum');
   }
 
-  if (!isRoleAuthorized({ targetRole: forum.permissions.read, currentRole: role })) {
+  if (!currentUser.hasPermission(forum.permissions.read)) {
     ctx.throw(403, 'You do not have permission to read this forum');
   }
 

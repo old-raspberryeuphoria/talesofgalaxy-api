@@ -2,10 +2,9 @@ import bcrypt from 'bcrypt';
 import config from 'config';
 import diacritics from 'diacritics';
 
+import isRoleAuthorized from '../helpers/permissions/isRoleAuthorized';
 import safeString from '../helpers/strings/safeString';
 import { ROLE_ADMIN } from '../helpers/constants/roles';
-
-const hiddenProperties = ['password'];
 
 function normalizeEmail(value, key) {
   if (value) {
@@ -98,14 +97,20 @@ export default (sequelize, DataTypes) => {
     });
   };
 
+  const hiddenProperties = ['password'];
+
   User.prototype.toJSON = function() {
-    const user = Object.assign({}, this.get());
+    const user = { ...this.get() };
 
     hiddenProperties.forEach(property => {
       delete user[property];
     });
 
     return user;
+  };
+
+  User.hasPermission = function(roleRequired) {
+    return isRoleAuthorized({ roleRequired, role: this.user.role });
   };
 
   return User;

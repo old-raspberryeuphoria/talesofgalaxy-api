@@ -7,4 +7,4 @@ const rolesLevel = {
   [ROLE_ADMIN]: 3,
 };
 
-export default ({ targetRole, currentRole }) => rolesLevel[currentRole] >= rolesLevel[targetRole];
+export default ({ roleRequired, role }) => rolesLevel[role] >= rolesLevel[roleRequired];
