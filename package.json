@@ -38,7 +38,7 @@
     "koa-passport": "^4.1.1",
     "koa-ratelimit": "^4.2.0",
     "koa-router": "^7.4.0",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^7.10.0",
     "sequelize": "^5.3.0",
     "sequelize-cli": "^4.1.1",
